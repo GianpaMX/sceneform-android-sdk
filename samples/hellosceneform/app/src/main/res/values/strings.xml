@@ -16,4 +16,5 @@
 -->
 <resources>
     <string name="app_name">HelloSceneform</string>
+    <string name="marker">Marker</string>
 </resources>
