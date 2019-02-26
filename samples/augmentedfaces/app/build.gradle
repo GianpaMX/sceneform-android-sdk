@@ -24,6 +24,8 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
+        multiDexEnabled true
     }
     // Sceneform libraries use language constructs from Java 8.
     // Add these compile options if targeting minSdkVersion < 26.
@@ -32,6 +34,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -39,10 +44,35 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
+    implementation('com.google.guava:guava:26.0-android') {
+        exclude group: 'com.google.code.findbugs'
+        exclude group: 'org.checkerframework'
+        exclude group: 'com.google', module: 'j2objc.annotations'
+    }
 
     // Provides ArFragment, and other Sceneform UX resources:
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.7.0"
+    implementation('com.google.ar.sceneform.ux:sceneform-ux:1.7.0') {
+        exclude group: 'com.google.guava'
+        exclude group: 'com.google', module: 'j2objc.annotations'
+        exclude group: 'javax.annotation'
+        exclude group: 'org.checkerframework'
+    }
+
+    implementation(name:'assets-1.7.0', ext:'aar')
+
+//    implementation('com.google.ar.sceneform:assets:1.7.0') {
+//        exclude group: 'com.google.guava'
+//        exclude group: 'com.google', module: 'j2objc.annotations'
+//        exclude group: 'javax.annotation'
+//        exclude group: 'org.checkerframework'
+//    }
 
     // Use the Sceneform UX Package built from the source files included in the sceneformux folder.
     //api project(":sceneformux")
@@ -59,4 +89,3 @@ sceneform.asset('sampledata/models/fox_face.fbx',
         'sampledata/models/fox_face_material.mat',
         'sampledata/models/fox_face.sfa',
         'src/main/res/raw/fox_face')
-
